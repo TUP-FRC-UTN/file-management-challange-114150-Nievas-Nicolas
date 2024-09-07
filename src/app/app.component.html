@@ -38,12 +38,7 @@
                                 <div class="d-flex align-items-center">
                                     @if (item.owners.length > 0) {
                                         @for (owner of item.owners.slice(0, 3); track $index) {
-                                            <img
-                                                [src]="owner.avatarUrl"
-                                                alt="{{ owner.name }}"
-                                                class="avatar me-1"
-                                                [attr.title]="owner.name"
-                                            />
+                                            <img [src]="owner.avatarUrl" alt="{{ owner.name }}" class="avatar me-1" [attr.title]="owner.name" />
                                         }
                                         @if (item.owners.length > 3) {
                                             <div class="extra-owners">
@@ -59,5 +54,7 @@
             </table>
         </div>
     </div>
-    <app-form *ngIf="viewForm"></app-form>
+    @if (viewForm) {
+        <app-form></app-form>
+    }
 </div>
