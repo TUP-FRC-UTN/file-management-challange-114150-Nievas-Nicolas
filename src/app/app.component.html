@@ -55,6 +55,6 @@
         </div>
     </div>
     @if (viewForm) {
-        <app-form></app-form>
+        <app-form (closeForm)="hideForm()" (formEmit)="pushForm($event)"></app-form>
     }
 </div>

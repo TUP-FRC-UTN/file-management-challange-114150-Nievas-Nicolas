@@ -1,1 +1,42 @@
-<p>form works!</p>
+<div class="container my-4 d-flex justify-content-center">
+    <div class="col-12">
+      <form class="row g-4 needs-validation p-4 border rounded shadow-sm bg-light" #form="ngForm" (ngSubmit)="sendForm(form)">
+        
+        <div class="col-12">
+          <label for="nombre" class="form-label fw-bold">Nombre</label>
+          <input #nombre="ngModel" [(ngModel)]="fileItem.name" type="text" class="form-control rounded-pill" id="nombre" name="nombre" placeholder="Enter file name" required 
+            [ngClass]="{'is-valid': nombre.valid && (nombre.dirty || nombre.touched),'is-invalid': nombre.invalid && (nombre.dirty || nombre.touched)} ">
+          @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
+            <div class="text-danger mt-1">El nombre es requerido</div>
+          } 
+        </div>
+        
+        <div class="col-12">
+          <label for="creation" class="form-label fw-bold">Fecha</label>
+          <input #creation="ngModel" [(ngModel)]="fileItem.creation" type="date" class="form-control rounded-pill" id="creation" name="creation" required
+          [ngClass]="{'is-valid': creation.valid && (creation.dirty || creation.touched), 'is-invalid': creation.invalid && (creation.dirty || creation.touched)}">
+          @if (creation.invalid && (creation.dirty || creation.touched)) {
+            <div class="text-danger mt-1">La fecha es requerida</div>
+          }
+        </div>
+  
+        <div class="col-12">
+            <label for="tipo" class="form-label fw-bold">Tipo de Archivo</label>
+            <select #tipo="ngModel" [(ngModel)]="fileItem.type" class="form-select rounded-pill" 
+                    [ngClass]="{'is-valid': tipo.valid && tipo.touched}" name="tipo" id="tipo" required>
+                <option [ngValue]="undefined" disabled selected>Selecciona un tipo</option>
+                <option [ngValue]="fileType.FILE">Archivo</option>
+                <option [ngValue]="fileType.FOLDER">Carpeta</option>
+            </select>
+            @if (tipo.invalid && (tipo.dirty || tipo.touched)) {
+                <div class="text-danger mt-1">El tipo de archivo es requerido</div>
+            }
+        </div>
+  
+        <div class="col-12 d-flex justify-content-between mt-4">
+          <button class="btn btn-outline-secondary rounded-pill px-4" type="button" (click)="cancel()">Volver</button>
+          <button class="btn btn-primary rounded-pill px-4" type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
