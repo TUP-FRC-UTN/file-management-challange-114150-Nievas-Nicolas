@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { FileItem, FileType } from '../../models/file.item.model';
+import { FileItem, FileOwner, FileType } from '../../models/file.item.model';
+import { FILE_LIST, OWNERS } from '../../data/file.storage';
 
 @Component({
   selector: 'app-form',
@@ -19,15 +20,17 @@ export class FormComponent {
     id: '',
     name: '',
     creation: new Date(),
-    owners: [{ name: '', avatarUrl: '' }],
+    owners: [],
     type: FileType.FILE,
     parentId: undefined,
   };
+  ownerList: FileOwner[] = OWNERS;
+  selectedOwner: FileOwner | undefined;
 
   sendForm(form: NgForm) {
     if (form.valid) {
       this.fileItem.id = Math.random().toString(36).substr(2, 9);
-      this.fileItem.owners = this.fileItem.owners.filter(owner => owner.name.trim() !== '' && owner.avatarUrl.trim() !== '');
+      //this.fileItem.owners = this.fileItem.owners.filter(owner => owner.name.trim() !== '' && owner.avatarUrl.trim() !== '');
       this.formEmit.emit(this.fileItem);
       this.closeForm.emit();
       console.log('Form sent', this.fileItem);
@@ -42,4 +45,10 @@ export class FormComponent {
     this.closeForm.emit();
   }
 
+  addOwner() {
+    if (this.selectedOwner && !this.fileItem.owners.some(owner => owner.name === this.selectedOwner?.name)) {
+      this.fileItem.owners.push({ ...this.selectedOwner });
+      this.selectedOwner = undefined; 
+    }
+  }
 }

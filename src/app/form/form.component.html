@@ -4,10 +4,14 @@
         
         <div class="col-12">
           <label for="nombre" class="form-label fw-bold">Nombre</label>
-          <input #nombre="ngModel" [(ngModel)]="fileItem.name" type="text" class="form-control rounded-pill" id="nombre" name="nombre" placeholder="Enter file name" required 
+          <input #nombre="ngModel" [(ngModel)]="fileItem.name" type="text" class="form-control rounded-pill" id="nombre" name="nombre" placeholder="Enter file name" required minlength="5"
             [ngClass]="{'is-valid': nombre.valid && (nombre.dirty || nombre.touched),'is-invalid': nombre.invalid && (nombre.dirty || nombre.touched)} ">
           @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
-            <div class="text-danger mt-1">El nombre es requerido</div>
+            @if(nombre.getError('required')) {
+              <div class="text-danger mt-1">El nombre es requerido</div>
+            } @else if(nombre.getError('minlength')) {
+              <div class="text-danger mt-1">El nombre debe tener al menos 5 caracteres</div>
+            }
           } 
         </div>
         
@@ -32,6 +36,26 @@
                 <div class="text-danger mt-1">El tipo de archivo es requerido</div>
             }
         </div>
+
+        <div class="col-10">
+          <label for="owners" class="form-label fw-bold">Dueños</label>
+          <div class="d-flex">
+          <select #owners="ngModel" [(ngModel)]="selectedOwner" class="form-select rounded-pill" id="owners" name="owners" 
+                  [ngClass]="{'is-valid': owners.valid && owners.touched, 'is-invalid': owners.invalid && owners.touched}">
+            @for ( item of ownerList; track $index) {
+              <option [ngValue]="item">{{item.name}}</option>
+            }
+          </select>
+          <button class="btn btn-secondary rounded-pill ms-2" (click)="addOwner()" type="button">+</button>
+        </div>
+          <div class="mt-2">
+            @for (item of fileItem.owners; track $index) {
+              <span class="badge bg-primary m-1">
+                <img [src]="item.avatarUrl" alt="{{item.name}}" class="avatar me-1"> {{item.name}}
+              </span>
+            }
+          </div>
+        </div>      
   
         <div class="col-12 d-flex justify-content-between mt-4">
           <button class="btn btn-outline-secondary rounded-pill px-4" type="button" (click)="cancel()">Volver</button>
